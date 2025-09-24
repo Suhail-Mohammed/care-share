@@ -1,0 +1,54 @@
+package retouch.project.care.share.controller;
+
+import jakarta.servlet.http.HttpServletRequest;
+import org.springframework.security.core.context.SecurityContextHolder;
+import retouch.project.care.share.dto.LoginRequest;
+import retouch.project.care.share.dto.RegisterRequest;
+import retouch.project.care.share.entitiy.User;
+import retouch.project.care.share.repository.UserRepository;
+import retouch.project.care.share.service.UserService;
+
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.web.bind.annotation.*;
+
+@RestController
+@RequestMapping("/api/auth")
+public class AuthController {
+
+
+    private final UserService userService;
+    private final AuthenticationManager authenticationManager;
+
+
+    public AuthController(UserService userService, AuthenticationManager authenticationManager) {
+        this.userService = userService;
+        this.authenticationManager = authenticationManager;
+    }
+
+
+    @PostMapping("/register")
+    public User register(@RequestBody RegisterRequest request) {
+        return userService.register(request);
+    }
+
+
+    @PostMapping("/login")
+    public String login(@RequestBody LoginRequest request, HttpServletRequest httpRequest) {
+        Authentication auth = authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword())
+        );
+
+
+        if (auth.isAuthenticated()) {
+// store authentication in security context so session cookie is created
+            SecurityContextHolder.getContext().setAuthentication(auth);
+            httpRequest.getSession(true); // creates session and allows browser to receive cookie
+            return "Login Successful";
+        }
+
+
+        return "Invalid Credentials";
+    }
+}

@@ -1,0 +1,85 @@
+<!-- ==========================
+File: src/main/resources/static/login.html
+========================== -->
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Care & Share — Login</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+<div class="container mt-5" style="max-width: 480px;">
+    <h2 class="mb-4">Login</h2>
+
+
+    <div id="alert" class="alert d-none" role="alert"></div>
+
+
+    <form id="loginForm">
+        <div class="mb-3">
+            <label for="email" class="form-label">Email</label>
+            <input id="email" name="email" type="email" class="form-control" required>
+        </div>
+        <div class="mb-3">
+            <label for="password" class="form-label">Password</label>
+            <input id="password" name="password" type="password" class="form-control" required>
+        </div>
+
+
+        <button class="btn btn-primary" type="submit">Login</button>
+        <a class="btn btn-link" href="/register.html">Create account</a>
+    </form>
+</div>
+
+
+<script>
+    const showAlert = (message, type = 'success') => {
+    const alertEl = document.getElementById('alert');
+    alertEl.className = 'alert alert-' + type;
+    alertEl.innerText = message;
+    alertEl.classList.remove('d-none');
+    }
+
+
+    document.getElementById('loginForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const payload = {
+    email: document.getElementById('email').value,
+    password: document.getElementById('password').value
+    };
+
+
+    try {
+    const res = await fetch('/api/auth/login', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    credentials: 'include', // important so cookies (session) are stored by the browser
+    body: JSON.stringify(payload)
+    });
+
+
+    const text = await res.text();
+
+
+    if (!res.ok) {
+    showAlert('Login failed: ' + text, 'danger');
+    return;
+    }
+
+
+    showAlert(text);
+
+
+    // on successful login, redirect to homepage or items page
+    if (text.includes('Login Successful')) {
+    setTimeout(() => { window.location.href = '/'; }, 600);
+    }
+    } catch (err) {
+    showAlert('Network error: ' + err.message, 'danger');
+    }
+    });
+</script>
+</body>
+</html>
