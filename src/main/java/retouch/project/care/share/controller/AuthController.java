@@ -51,4 +51,16 @@ public class AuthController {
 
         return "Invalid Credentials";
     }
+
+    @PostMapping("/forgot-password")
+    public String forgotPassword(@RequestParam String email) {
+        return userService.initiatePasswordReset(email);
+    }
+
+    @PostMapping("/reset-password")
+    public String resetPassword(@RequestParam String token,
+                                @RequestParam String newPassword) {
+        return userService.resetPassword(token, newPassword);
+    }
+
 }

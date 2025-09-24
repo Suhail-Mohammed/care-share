@@ -51,7 +51,7 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.csrf(csrf -> csrf.disable()) // Disable CSRF for Postman testing
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/auth/**", "/register.html", "/login.html").permitAll() // allow register & login
+                        .requestMatchers("/api/auth/**", "/register.html", "/login.html","/forgot-password.html").permitAll() // allow register & login
                         .anyRequest().authenticated()               // protect other APIs
                 )
                 .formLogin(form -> form.disable())  // we don’t want Spring’s default login page
