@@ -1,85 +1,264 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Care & Share — Register</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet" />
 
     <style>
+        /* Your existing styles */
+        * {
+          margin: 0;
+          padding: 0;
+          box-sizing: border-box;
+          font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        html, body {
+          background: rgba(6, 20, 29, 0.85);
+          height: 100%;
+          margin: 0;
+        }
         body {
-          background: linear-gradient(135deg, #20c997, #0d6efd);
-          min-height: 100vh;
+          height: 100vh;
           display: flex;
-          align-items: center;
           justify-content: center;
+          align-items: center;
+          background: url('https://images.unsplash.com/photo-1521791136064-7986c2920216?auto=format&fit=crop&w=1350&q=80') no-repeat center center/cover;
+          position: relative;
         }
-        .card {
+        body::before {
+          content: "";
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          background: rgba(6, 20, 29, 0.85);
+          z-index: 0;
+        }
+        .register-box {
+          position: relative;
+          z-index: 1;
+          width: 450px;
+          max-height: 90vh;
+          overflow-y: auto;
+          background: rgba(0, 0, 0, 0.6);
+          box-shadow: 0 0 30px rgba(0, 255, 255, 0.4);
+          padding: 30px 30px;
+          border-radius: 12px;
+          color: #fff;
+          box-sizing: border-box;
+        }
+        .register-box h2 {
+          font-size: 26px;
+          margin-bottom: 30px;
+          text-align: center;
+        }
+        .input-box {
+          position: relative;
+          margin-bottom: 25px;
+        }
+        .input-box input {
+          width: 100%;
+          padding: 16px 50px 16px 16px;
           border: none;
-          border-radius: 1rem;
-          box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+          outline: none;
+          border-radius: 8px;
+          background: #142733;
+          color: #fff;
+          font-size: 16px;
+          transition: 0.3s;
         }
-        .form-control:focus {
-          border-color: #20c997;
-          box-shadow: 0 0 0 0.2rem rgba(32, 201, 151, 0.25);
+        .input-box input:focus {
+          box-shadow: 0 0 10px #00eaff;
         }
-        .btn-primary {
-          background: linear-gradient(135deg, #20c997, #0d6efd);
+        .input-box i {
+          position: absolute;
+          right: 16px;
+          top: 50%;
+          transform: translateY(-50%);
+          color: #aaa;
+          font-size: 18px;
+        }
+        .btn {
+          width: 100%;
+          padding: 16px;
           border: none;
+          border-radius: 25px;
+          background: linear-gradient(135deg, #00eaff, #0072ff);
+          color: #fff;
+          font-weight: bold;
+          font-size: 17px;
+          cursor: pointer;
+          margin-top: 15px;
+          transition: 0.3s;
         }
-        .btn-primary:hover {
-          background: linear-gradient(135deg, #1aa179, #0a58ca);
+        .btn:hover {
+          transform: translateY(-2px);
+          box-shadow: 0 0 15px rgba(0, 234, 255, 0.7);
         }
-        .btn-link {
+        .signup {
+          margin-top: 20px;
+          font-size: 15px;
+          text-align: center;
+        }
+        .signup a {
+          color: #00eaff;
           text-decoration: none;
         }
-        .btn-link:hover {
-          text-decoration: underline;
+        .feedback {
+          font-size: 0.95rem;
+          margin-top: 4px;
+        }
+        /* Scrollbar styling for WebKit browsers */
+        .register-box::-webkit-scrollbar {
+          width: 8px;
+        }
+        .register-box::-webkit-scrollbar-track {
+          background-color: rgba(6, 20, 29, 0.85);
+        }
+        .register-box::-webkit-scrollbar-thumb {
+          background-color: #0072ff;
+          border-radius: 10px;
+        }
+        .register-box::-webkit-scrollbar-thumb:hover {
+          background-color: #00eaff;
+        }
+        @media (max-width: 500px) {
+          .register-box {
+            width: 90vw;
+            padding: 20px 15px;
+          }
         }
     </style>
 </head>
 <body>
-<div class="container" style="max-width: 450px;">
-    <div class="card p-4">
-        <div class="card-body">
-            <h3 class="card-title text-center mb-4">📝 Create Account</h3>
+<div class="register-box">
+    <h2>Register</h2>
 
-            <div id="alert" class="alert d-none" role="alert"></div>
+    <form id="registerForm" novalidate>
+        <div class="input-box">
+            <input id="firstName" name="firstName" type="text" placeholder="First Name" required />
+            <i class="bi bi-person-fill"></i>
+        </div>
+        <div class="input-box">
+            <input id="lastName" name="lastName" type="text" placeholder="Last Name" required />
+            <i class="bi bi-person-fill"></i>
+        </div>
+        <div class="input-box">
+            <input id="phone" name="phone" type="text" maxlength="10" placeholder="Phone Number (10 digits)" required />
+            <i class="bi bi-telephone-fill"></i>
+            <div id="phoneFeedback" class="feedback"></div>
+        </div>
+        <div class="input-box">
+            <input id="email" name="email" type="email" placeholder="Email Address" required />
+            <i class="bi bi-envelope-fill"></i>
+        </div>
+        <div class="input-box">
+            <input id="password" name="password" type="password" placeholder="Password" required />
+            <i class="bi bi-lock-fill"></i>
+        </div>
+        <div class="input-box">
+            <input id="confirmPassword" name="confirmPassword" type="password" placeholder="Confirm Password" required />
+            <i class="bi bi-lock-fill"></i>
+            <div id="passwordMatchFeedback" class="feedback"></div>
+        </div>
 
-            <form id="registerForm">
-                <div class="mb-3">
-                    <label for="email" class="form-label">Email address</label>
-                    <input id="email" name="email" type="email" class="form-control" placeholder="you@example.com" required>
-                </div>
+        <button class="btn" type="submit">Register</button>
+    </form>
 
-                <div class="mb-3">
-                    <label for="password" class="form-label">Password</label>
-                    <input id="password" name="password" type="password" class="form-control" placeholder="Choose a password" required>
-                </div>
+    <div class="signup">
+        Already have an account? <a href="login.html">Login</a>
+    </div>
+</div>
 
-                <button class="btn btn-primary w-100 mb-3" type="submit">Register</button>
-
-                <div class="text-center">
-                    <a class="btn btn-link p-0" href="/login.html">🔐 Already have an account? Login</a>
-                </div>
-            </form>
+<!-- Bootstrap Modal for success -->
+<div class="modal fade" id="successModal" tabindex="-1" aria-labelledby="successModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content bg-dark text-white">
+            <div class="modal-header border-0">
+                <h5 class="modal-title" id="successModalLabel">Registration Successful</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body" id="successModalBody">
+                <!-- Success message will be inserted here -->
+            </div>
+            <div class="modal-footer border-0">
+                <button type="button" class="btn btn-primary" id="modalOkBtn">OK</button>
+            </div>
         </div>
     </div>
 </div>
 
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 <script>
     const showAlert = (message, type = 'success') => {
-      const alertEl = document.getElementById('alert');
-      alertEl.className = 'alert alert-' + type;
-      alertEl.innerText = message;
-      alertEl.classList.remove('d-none');
+      // fallback alert removed, using modal for success only
+      console.log(message);
+    };
+
+    const phoneInput = document.getElementById('phone');
+    const phoneFeedback = document.getElementById('phoneFeedback');
+    const passwordInput = document.getElementById('password');
+    const confirmPasswordInput = document.getElementById('confirmPassword');
+    const passwordMatchFeedback = document.getElementById('passwordMatchFeedback');
+    const registerForm = document.getElementById('registerForm');
+    const successModal = new bootstrap.Modal(document.getElementById('successModal'));
+    const modalOkBtn = document.getElementById('modalOkBtn');
+    const successModalBody = document.getElementById('successModalBody');
+
+    phoneInput.addEventListener('input', function () {
+      this.value = this.value.replace(/[^0-9]/g, '').slice(0, 10);
+      if (this.value.length !== 10) {
+        phoneFeedback.textContent = 'Enter a valid 10-digit phone number';
+        phoneFeedback.className = 'feedback text-danger';
+      } else {
+        phoneFeedback.textContent = '✅ Valid phone number';
+        phoneFeedback.className = 'feedback text-success';
+      }
+    });
+
+    function checkPasswordMatch() {
+      if (!confirmPasswordInput.value) {
+        passwordMatchFeedback.textContent = '';
+        return;
+      }
+      if (passwordInput.value === confirmPasswordInput.value) {
+        passwordMatchFeedback.textContent = '✅ Passwords match';
+        passwordMatchFeedback.className = 'feedback text-success';
+      } else {
+        passwordMatchFeedback.textContent = '❌ Passwords do not match';
+        passwordMatchFeedback.className = 'feedback text-danger';
+      }
     }
 
-    document.getElementById('registerForm').addEventListener('submit', async (e) => {
+    passwordInput.addEventListener('input', checkPasswordMatch);
+    confirmPasswordInput.addEventListener('input', checkPasswordMatch);
+
+    registerForm.addEventListener('submit', async (e) => {
       e.preventDefault();
+
+      if (phoneInput.value.length !== 10) {
+        alert('❌ Please enter a valid 10-digit phone number.');
+        phoneInput.focus();
+        return;
+      }
+
+      if (passwordInput.value !== confirmPasswordInput.value) {
+        alert('❌ Passwords do not match.');
+        confirmPasswordInput.focus();
+        return;
+      }
+
       const payload = {
+        firstName: document.getElementById('firstName').value,
+        lastName: document.getElementById('lastName').value,
+        phone: phoneInput.value,
         email: document.getElementById('email').value,
-        password: document.getElementById('password').value
+        password: passwordInput.value
       };
 
       try {
@@ -91,19 +270,22 @@
 
         if (!res.ok) {
           const text = await res.text();
-          showAlert('❌ Registration failed: ' + text, 'danger');
+          alert('❌ Registration failed: ' + text);
           return;
         }
 
         const data = await res.json();
-        showAlert('✅ Registered successfully. You can now log in with ' + (data.email || payload.email));
-
-        // redirect to login after short delay
-        setTimeout(() => { window.location.href = '/login.html'; }, 1200);
+        successModalBody.innerText = `🎉 Successfully registered with email: ${data.email || payload.email}`;
+        successModal.show();
 
       } catch (err) {
-        showAlert('⚠️ Network error: ' + err.message, 'danger');
+        alert('⚠️ Network error: ' + err.message);
       }
+    });
+
+    modalOkBtn.addEventListener('click', () => {
+      successModal.hide();
+      window.location.href = '/login.html';
     });
 </script>
 </body>
