@@ -18,6 +18,10 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    private String firstName;
+    private String lastName;
+    private String phone;
+
     @Column(unique = true, nullable = false)
     private String email;
 

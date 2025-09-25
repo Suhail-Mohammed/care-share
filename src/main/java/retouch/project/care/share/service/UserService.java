@@ -32,10 +32,14 @@ public class UserService {
             throw new RuntimeException("User already exists with this email");
         }
         User user = new User();
+        user.setFirstName(request.getFirstName());
+        user.setLastName(request.getLastName());
+        user.setPhone(request.getPhone());
         user.setEmail(request.getEmail());
         user.setPassword(passwordEncoder.encode(request.getPassword()));
         return userRepository.save(user);
     }
+
 
     public String initiatePasswordReset(String email) {
         Optional<User> userOpt = userRepository.findByEmail(email);
