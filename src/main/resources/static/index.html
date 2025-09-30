@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Care & Share — Home</title>
+
+    <style>
+        /* Reset and global */
+        * {
+          margin: 0;
+          padding: 0;
+          box-sizing: border-box;
+          font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        body, html {
+          height: 100%;
+          background: linear-gradient(135deg, #00eaff, #0072ff);
+          color: #fff;
+          display: flex;
+          flex-direction: column;
+          min-height: 100vh;
+        }
+
+        /* Header */
+        header {
+          background: rgba(0,0,0,0.25);
+          backdrop-filter: blur(6px);
+          padding: 20px 40px;
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+          font-weight: bold;
+          font-size: 1.25rem;
+          letter-spacing: 1.5px;
+        }
+
+        /* Links */
+        nav a {
+          color: #00eaff;
+          margin-left: 25px;
+          text-decoration: none;
+          font-weight: 600;
+          transition: color 0.3s ease;
+        }
+        nav a:hover {
+          color: #fff;
+          text-shadow: 0 0 8px #00eaff;
+        }
+
+        /* Main content */
+        main {
+          flex-grow: 1;
+          padding: 60px 20px;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+          gap: 40px;
+          text-align: center;
+        }
+        main h1 {
+          font-size: 3rem;
+          font-weight: 800;
+          text-shadow: 0 0 15px rgba(0, 234, 255, 0.75);
+          letter-spacing: 2px;
+        }
+        main p {
+          font-size: 1.25rem;
+          max-width: 420px;
+          line-height: 1.5;
+          text-shadow: 0 0 6px rgba(0,0,0,0.2);
+        }
+
+        /* 3D rotating cube container */
+        .cube-container {
+          perspective: 800px;
+          width: 180px;
+          height: 180px;
+          margin: 0 auto;
+        }
+        .cube {
+          width: 140px;
+          height: 140px;
+          position: relative;
+          margin: auto;
+          transform-style: preserve-3d;
+          animation: rotateCube 10s infinite linear;
+        }
+        .cube-face {
+          position: absolute;
+          width: 140px;
+          height: 140px;
+          background: linear-gradient(45deg, #00eaff, #0072ff);
+          border-radius: 15px;
+          box-shadow: 0 0 25px rgba(0,234,255,0.7);
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          font-size: 1.5rem;
+          font-weight: 700;
+          color: white;
+          text-transform: uppercase;
+          user-select: none;
+        }
+        .face-front  { transform: translateZ(70px); }
+        .face-back   { transform: rotateY(180deg) translateZ(70px); }
+        .face-right  { transform: rotateY(90deg) translateZ(70px); }
+        .face-left   { transform: rotateY(-90deg) translateZ(70px); }
+        .face-top    { transform: rotateX(90deg) translateZ(70px); }
+        .face-bottom { transform: rotateX(-90deg) translateZ(70px); }
+
+        @keyframes rotateCube {
+          from {
+            transform: rotateX(0deg) rotateY(0deg);
+          }
+          to {
+            transform: rotateX(360deg) rotateY(360deg);
+          }
+        }
+
+        /* Footer */
+        footer {
+          background: rgba(0,0,0,0.25);
+          backdrop-filter: blur(6px);
+          padding: 15px 40px;
+          text-align: center;
+          font-size: 0.9rem;
+          box-shadow: 0 -2px 10px rgba(0,0,0,0.3);
+        }
+
+        /* Responsive */
+        @media (max-width: 600px) {
+          main h1 {
+            font-size: 2.2rem;
+          }
+          main p {
+            font-size: 1rem;
+            max-width: 90%;
+          }
+          .cube-container {
+            width: 120px;
+            height: 120px;
+          }
+          .cube, .cube-face {
+            width: 100px;
+            height: 100px;
+          }
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <div>Care & Share</div>
+    <nav>
+        <a href="/login.html">Login</a>
+        <a href="/register.html">Register</a>
+    </nav>
+</header>
+
+<main>
+    <h1>Welcome to Care & Share</h1>
+    <p>Where care meets share — join our community and make a difference.</p>
+
+    <div class="cube-container" aria-label="3D animated cube">
+        <div class="cube" aria-hidden="true">
+            <div class="cube-face face-front">Care</div>
+            <div class="cube-face face-back">Share</div>
+            <div class="cube-face face-right">Help</div>
+            <div class="cube-face face-left">Support</div>
+            <div class="cube-face face-top">Community</div>
+            <div class="cube-face face-bottom">Trust</div>
+        </div>
+    </div>
+</main>
+
+<footer>
+    &copy; 2025 Care & Share. All rights reserved.
+</footer>
+
+</body>
+</html>

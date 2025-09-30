@@ -1,6 +1,8 @@
 package retouch.project.care.share.controller;
 
 import jakarta.servlet.http.HttpServletRequest;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import retouch.project.care.share.dto.LoginRequest;
 import retouch.project.care.share.dto.RegisterRequest;
@@ -35,22 +37,21 @@ public class AuthController {
 
 
     @PostMapping("/login")
-    public String login(@RequestBody LoginRequest request, HttpServletRequest httpRequest) {
+    public ResponseEntity<String> login(@RequestBody LoginRequest request, HttpServletRequest httpRequest) {
         Authentication auth = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword())
         );
 
-
         if (auth.isAuthenticated()) {
-// store authentication in security context so session cookie is created
             SecurityContextHolder.getContext().setAuthentication(auth);
-            httpRequest.getSession(true); // creates session and allows browser to receive cookie
-            return "Login Successful";
+            httpRequest.getSession(true);
+            // Return dashboard URL or success message to frontend
+            return ResponseEntity.ok("Login Successful");
         }
 
-
-        return "Invalid Credentials";
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid Credentials");
     }
+
 
     @PostMapping("/forgot-password")
     public String forgotPassword(@RequestParam String email) {

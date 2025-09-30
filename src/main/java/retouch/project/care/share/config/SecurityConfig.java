@@ -51,11 +51,19 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.csrf(csrf -> csrf.disable()) // Disable CSRF for Postman testing
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/auth/**", "/register.html", "/login.html","/forgot-password.html","/reset-password.html").permitAll() // allow register & login
+                        .requestMatchers("/","/api/auth/**","dashboard.html","index.html" ,"/register.html", "/login.html","/forgot-password.html","/reset-password.html").permitAll() // allow register & login
                         .anyRequest().authenticated()               // protect other APIs
                 )
                 .formLogin(form -> form.disable())  // we don’t want Spring’s default login page
-                .httpBasic(httpBasic -> httpBasic.disable()); // disable basic auth popup
+                .httpBasic(httpBasic -> httpBasic.disable())
+                        .logout(logout -> logout
+                                .logoutUrl("/logout")
+                                .logoutSuccessUrl("/")
+                                .invalidateHttpSession(true)
+                                .deleteCookies("JSESSIONID")
+
+
+                ); // disable basic auth popup
 
         return http.build();
     }
