@@ -49,21 +49,34 @@ public class SecurityConfig {
     // ✅ The important part
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http.csrf(csrf -> csrf.disable()) // Disable CSRF for Postman testing
+        http.csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/","/api/auth/**","dashboard.html","index.html" ,"/register.html", "/login.html","/forgot-password.html","/reset-password.html").permitAll() // allow register & login
-                        .anyRequest().authenticated()               // protect other APIs
+                        // ✅ Allow static resources
+                        .requestMatchers("/css/**", "/js/**", "/images/**").permitAll()
+
+                        // ✅ Allow public HTML pages
+                        .requestMatchers(
+                                "/",
+                                "/api/auth/**",
+                                "/dashboard.html",
+                                "/index.html",
+                                "/register.html",
+                                "/login.html",
+                                "/forgot-password.html",
+                                "/reset-password.html"
+                        ).permitAll()
+
+                        // ✅ Everything else requires authentication
+                        .anyRequest().authenticated()
                 )
-                .formLogin(form -> form.disable())  // we don’t want Spring’s default login page
+                .formLogin(form -> form.disable())  // disable Spring's default login page
                 .httpBasic(httpBasic -> httpBasic.disable())
-                        .logout(logout -> logout
-                                .logoutUrl("/logout")
-                                .logoutSuccessUrl("/")
-                                .invalidateHttpSession(true)
-                                .deleteCookies("JSESSIONID")
-
-
-                ); // disable basic auth popup
+                .logout(logout -> logout
+                        .logoutUrl("/logout")
+                        .logoutSuccessUrl("/")
+                        .invalidateHttpSession(true)
+                        .deleteCookies("JSESSIONID")
+                );
 
         return http.build();
     }

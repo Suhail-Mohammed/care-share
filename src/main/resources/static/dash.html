@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Dashboard — Care & Share</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        body {
+            background: url('https://images.unsplash.com/photo-1542744095-291d1f67b221?auto=format&fit=crop&w=1920&q=80') no-repeat center center fixed;
+            background-size: cover;
+            position: relative;
+            min-height: 100vh;
+        }
+        body::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(6, 20, 29, 0.88);
+            z-index: 0;
+        }
+        .dashboard-container {
+            position: relative;
+            z-index: 1;
+            padding: 20px;
+        }
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            color: white;
+        }
+        .header h1 {
+            font-weight: 600;
+            font-size: 28px;
+        }
+        .logout-btn {
+            background: linear-gradient(135deg, #00eaff, #0072ff);
+            border: none;
+            padding: 8px 20px;
+            border-radius: 20px;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        .logout-btn:hover {
+            opacity: 0.9;
+            transform: translateY(-2px);
+        }
+        .card {
+            background: rgba(10, 25, 35, 0.75);
+            border: 1px solid rgba(0, 234, 255, 0.3);
+            border-radius: 16px;
+            color: white;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            height: 100%;
+        }
+        .card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 10px 25px rgba(0, 234, 255, 0.4);
+        }
+        .card-icon {
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+            color: #00eaff;
+        }
+        .card-title {
+            font-size: 1.4rem;
+            margin-bottom: 12px;
+            font-weight: 600;
+        }
+        .card-text {
+            font-size: 0.95rem;
+            color: #ccc;
+            margin-bottom: 20px;
+        }
+        .btn-action {
+            width: 100%;
+            padding: 10px;
+            border-radius: 8px;
+            font-weight: 600;
+            background: linear-gradient(135deg, #00eaff, #0072ff);
+            color: white;
+            border: none;
+            margin-top: 10px;
+        }
+        .btn-action:hover {
+            opacity: 0.95;
+        }
+        .upload-area {
+            border: 2px dashed #0072ff;
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+            margin: 15px 0;
+            background: rgba(0, 30, 50, 0.4);
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        .upload-area:hover {
+            border-color: #00eaff;
+        }
+        .upload-area i {
+            font-size: 2rem;
+            color: #00eaff;
+            margin-bottom: 10px;
+        }
+        footer {
+            color: rgba(255, 255, 255, 0.7);
+            text-align: center;
+            margin-top: 40px;
+            padding: 20px;
+            font-size: 0.9rem;
+        }
+        .user-info {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        .welcome-text {
+            font-size: 1.1rem;
+            margin-bottom: 5px;
+        }
+        .user-email {
+            font-size: 0.9rem;
+            color: #00eaff;
+        }
+    </style>
+</head>
+<body>
+<div class="dashboard-container">
+    <!-- Header with Logout -->
+    <div class="header">
+        <h1><i class="fas fa-tachometer-alt me-2"></i>Dashboard</h1>
+        <button class="logout-btn" onclick="logout()">
+            <i class="fas fa-sign-out-alt me-1"></i> Logout
+        </button>
+    </div>
+
+    <!-- User Info Section -->
+    <div class="user-info">
+        <div class="welcome-text">Welcome, <span id="userName">User</span>!</div>
+        <div class="user-email" id="userEmail">Loading...</div>
+    </div>
+
+    <!-- Action Cards -->
+    <div class="row g-4">
+        <!-- Donate Card -->
+        <div class="col-md-4">
+            <div class="card p-4 text-center">
+                <div class="card-icon">
+                    <i class="fas fa-hands-helping"></i>
+                </div>
+                <h5 class="card-title">Donate</h5>
+                <p class="card-text">Share clothes, food, books, or essentials with those in need.</p>
+                <div class="upload-area" onclick="document.getElementById('donateFile').click()">
+                    <i class="fas fa-cloud-upload-alt"></i>
+                    <p>Click to upload item photo</p>
+                    <input type="file" id="donateFile" accept="image/*" style="display: none;" />
+                </div>
+                <button class="btn-action" onclick="submitAction('donate')">
+                    <i class="fas fa-paper-plane me-1"></i> Submit Donation
+                </button>
+            </div>
+        </div>
+
+        <!-- Exchange Card -->
+        <div class="col-md-4">
+            <div class="card p-4 text-center">
+                <div class="card-icon">
+                    <i class="fas fa-exchange-alt"></i>
+                </div>
+                <h5 class="card-title">Exchange</h5>
+                <p class="card-text">Swap items like books, tools, or toys with community members.</p>
+                <div class="upload-area" onclick="document.getElementById('exchangeFile').click()">
+                    <i class="fas fa-cloud-upload-alt"></i>
+                    <p>Upload item for exchange</p>
+                    <input type="file" id="exchangeFile" accept="image/*" style="display: none;" />
+                </div>
+                <button class="btn-action" onclick="submitAction('exchange')">
+                    <i class="fas fa-sync me-1"></i> Start Exchange
+                </button>
+            </div>
+        </div>
+
+        <!-- Resale Card -->
+        <div class="col-md-4">
+            <div class="card p-4 text-center">
+                <div class="card-icon">
+                    <i class="fas fa-tags"></i>
+                </div>
+                <h5 class="card-title">Resale</h5>
+                <p class="card-text">Sell gently used items at affordable prices to support others.</p>
+                <div class="upload-area" onclick="document.getElementById('resaleFile').click()">
+                    <i class="fas fa-cloud-upload-alt"></i>
+                    <p>Add product image</p>
+                    <input type="file" id="resaleFile" accept="image/*" style="display: none;" />
+                </div>
+                <button class="btn-action" onclick="submitAction('resale')">
+                    <i class="fas fa-shopping-cart me-1"></i> List for Sale
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        &copy; 2024 Care & Share — Building compassionate communities through sharing.
+    </footer>
+</div>
+
+<script>
+    // Check authentication and load user data
+    async function checkAuth() {
+        try {
+            const response = await fetch('/api/auth/user/profile', {
+                credentials: 'include'
+            });
+
+            if (!response.ok) {
+                // If not authenticated, redirect to login
+                window.location.href = '/login.html';
+                return;
+            }
+
+            // User is authenticated, load user data
+            const userData = await response.json();
+            document.getElementById('userName').textContent = userData.firstName || 'User';
+            document.getElementById('userEmail').textContent = userData.email;
+
+        } catch (error) {
+            console.error('Auth check failed:', error);
+            window.location.href = '/login.html';
+        }
+    }
+
+    // Logout function
+    async function logout() {
+        try {
+            const res = await fetch('/api/auth/logout', {
+                method: 'POST',
+                credentials: 'include'
+            });
+            if (res.ok) {
+                window.location.href = '/login.html';
+            } else {
+                alert('Logout failed. Redirecting anyway.');
+                window.location.href = '/login.html';
+            }
+        } catch (err) {
+            console.error('Logout error:', err);
+            window.location.href = '/login.html';
+        }
+    }
+
+    // Submit action function
+    function submitAction(type) {
+        alert(✅ ${type.charAt(0).toUpperCase() + type.slice(1)} request submitted! (In real app, this would send data to /api/${type}));
+        // In real implementation, you'd collect file + description and POST to your backend
+    }
+
+    // File upload preview
+    document.querySelectorAll('input[type="file"]').forEach(input => {
+        input.addEventListener('change', function(e) {
+            if (e.target.files.length) {
+                const fileName = e.target.files[0].name;
+                const area = e.target.closest('.upload-area');
+                area.innerHTML = <i class="fas fa-check-circle text-success"></i><p>Selected: ${fileName}</p>;
+            }
+        });
+    });
+
+    // Check authentication when dashboard loads
+    document.addEventListener('DOMContentLoaded', checkAuth);
+</script>
+</body>
+</html>
